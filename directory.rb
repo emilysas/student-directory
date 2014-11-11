@@ -7,3 +7,6 @@ puts "Luke Clewlow"
 puts "Emily Sas"
 puts "Charlie Walsh"
 puts "Huy Lee"
+print "Overall, we have"
+print 9
+puts " great students"
