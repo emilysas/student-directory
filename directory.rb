@@ -21,8 +21,8 @@ def print_header
 end
 
 def print_names(names)
-  names.each do |name|
-    puts name
+  names.each_with_index do |name, i|
+    puts "#{i}. #{name}"
   end
 end
 
