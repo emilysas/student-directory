@@ -22,7 +22,7 @@ end
 
 def print_names(people)
   people.each_with_index do |person, i|
-    puts "#{i}. #{person}" if person[:name][0] == "A"
+    puts "#{i}. #{person}" if person[:name].length < 12
   end
 end
 
