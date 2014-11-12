@@ -6,6 +6,12 @@ def input_students
     # get the first name
     name = gets.chomp
     while !name.empty? do 
+      print "Please enter your cohort\n"
+      cohort = gets.chomp
+      if cohort == "" 
+        cohort = :december 
+      else cohort.to_sym
+      end
       print "Please enter #{name}'s country of birth\n"
       country_of_birth = gets.chomp
       print "Please enter #{name}'s height\n"
@@ -15,7 +21,7 @@ def input_students
       hobbies = []
       hobbies << hobbylist.split{" "}
       
-      @students << {:name => name, :cohort => :november, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
+      @students << {:name => name, :cohort => cohort, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
       print "Now we have #{@students.length} students\n"
       # get another name from the user
       name = gets.chomp 
