@@ -29,6 +29,7 @@ def input_students
       # get another name from the user
       puts "Please enter another name, or press enter to finish:"
       name = gets.delete "\r\n"
+      break
     end
     
   end
@@ -61,6 +62,6 @@ def print_footer(names)
 end
 
 students = input_students
-print_header
-print_names(students)
-print_footer(students)
+print_header if students.length > 0
+print_names(students) if students.length > 0
+print_footer(students) if students.length > 0
