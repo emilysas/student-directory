@@ -1,19 +1,29 @@
 def input_students
-  print "Please enter the names of the students\nTo finish, just hit return twice\n"
+  print "Please enter the names and details of the students\nTo finish, just hit return twice\n"
   # create an empty array
-  students = []
-  # get the first name
-  name = gets.chomp
-  # while the name is not empty, repeat this code
-  while !name.empty? do 
-    # add the student hash to the array
-    students << {:name => name, :cohort => :november}
-    print "Now we have #{students.length} students\n"
-    # get another name from the user
-    name = gets.chomp  
+  @students = []
+  def get_info
+    # get the first name
+    name = gets.chomp
+    while !name.empty? do 
+      print "Please enter #{name}'s country of birth\n"
+      country_of_birth = gets.chomp
+      print "Please enter #{name}'s height\n"
+      height = gets.chomp
+      print "Please enter #{name}'s hobbies\n"
+      hobbylist = gets.chomp
+      hobbies = []
+      hobbies << hobbylist.split{" "}
+      
+      @students << {:name => name, :cohort => :november, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
+      print "Now we have #{@students.length} students\n"
+      # get another name from the user
+      name = gets.chomp 
+    end
   end
+  get_info
   # return the array of students
-  students
+  @students
 end
 
 def print_header
