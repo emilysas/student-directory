@@ -20,9 +20,13 @@ def print_header
   print "The students of my cohort of Makers Academy\n----------------"
 end
 
-def print_names(people)
-  people.each_with_index do |person, i|
-    puts "#{i}. #{person}" if person[:name].length < 12
+def print_names(names)
+  for name in names 
+    i = 0
+    while i < names.length
+      puts name
+      i += 1
+    end
   end
 end
 
