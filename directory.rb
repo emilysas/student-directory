@@ -20,9 +20,9 @@ def print_header
   print "The students of my cohort of Makers Academy\n----------------"
 end
 
-def print_names(names)
-  names.each_with_index do |name, i|
-    puts "#{i}. #{name}"
+def print_names(people)
+  people.each_with_index do |person, i|
+    puts "#{i}. #{person}" if person[:name][0] == "A"
   end
 end
 
