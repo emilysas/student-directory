@@ -22,7 +22,10 @@ def input_students
       hobbies << hobbylist.split{" "}
       
       @students << {:name => name, :cohort => cohort, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
-      print "Now we have #{@students.length} students\n"
+      if @students.length > 1
+        print "Now we have #{@students.length} students\n"
+      else print "Now we have #{@students.length} student\n"
+      end
       # get another name from the user
       puts "Please enter another name, or press enter to finish:"
       name = gets.chomp
