@@ -4,20 +4,20 @@ def input_students
   @students = []
   def get_info
     # get the first name
-    name = gets.chomp
+    name = gets.delete "\r\n"
     while !name.empty? do 
       print "Please enter your cohort\n"
-      cohort = gets.chomp
+      cohort = gets.delete "\r\n"
       if cohort == "" 
         cohort = :december 
       else cohort = cohort.to_sym
       end
       print "Please enter #{name}'s country of birth\n"
-      country_of_birth = gets.chomp
+      country_of_birth = gets.delete "\r\n"
       print "Please enter #{name}'s height\n"
-      height = gets.chomp
+      height = gets.delete "\r\n"
       print "Please enter #{name}'s hobbies\n"
-      hobbylist = gets.chomp
+      hobbylist = gets.delete "\r\n"
       hobbies = []
       hobbies << hobbylist.split{" "}
       
@@ -28,7 +28,7 @@ def input_students
       end
       # get another name from the user
       puts "Please enter another name, or press enter to finish:"
-      name = gets.chomp
+      name = gets.delete "\r\n"
     end
     
   end
@@ -46,15 +46,18 @@ def print_names(names)
     i = 0
     while i < names.length 
       i += 1 
-      if name[:cohort]==:december 
+      #if name[:cohort]==:december 
         puts name
-      end
+      #end
     end
   end
 end
 
 def print_footer(names)
-  print "Overall, we have #{names.length} great students\n"
+  if names.length > 1
+    print "Overall, we have #{names.length} great students\n"
+  else print "Overall, we have 1 great student\n"
+  end
 end
 
 students = input_students
