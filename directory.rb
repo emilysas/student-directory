@@ -3,7 +3,7 @@
 def interactive_menu
   loop do
   print_menu
-  process(gets.chomp)
+  process(STDIN.gets.chomp)
   end
 end
 
@@ -24,7 +24,7 @@ end
 def process(selection)
   case selection
     when "1"
-      @students = input_students
+      input_students
     when "2"
       show_students
     when "3"
@@ -40,42 +40,60 @@ end
 
 def input_students
   print "Please enter the names and details of the students\nTo finish, just hit return twice\n"
-  # create an empty array
-  @students = []
-  def get_info
-    # get the first name
-    name = gets.delete "\r\n"
-    while !name.empty? do 
-      print "Please enter your cohort\n"
-      cohort = gets.delete "\r\n"
-      if cohort == "" 
-        cohort = :december 
-      else cohort = cohort.to_sym
-      end
-      print "Please enter #{name}'s country of birth\n"
-      country_of_birth = gets.delete "\r\n"
-      print "Please enter #{name}'s height\n"
-      height = gets.delete "\r\n"
-      print "Please enter #{name}'s hobbies\n"
-      hobbylist = gets.delete "\r\n"
-      hobbies = []
-      hobbies << hobbylist.split{" "}
-      
-      @students << {:name => name, :cohort => cohort, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
-      if @students.length > 1
-        print "Now we have #{@students.length} students\n"
-      else print "Now we have #{@students.length} student\n"
-      end
-      # get another name from the user
-      puts "Please enter another name, or press enter to finish:"
-      name = gets.delete "\r\n"
-      break
+
+  name = STDIN.gets.chomp
+  while !name.empty? do 
+    print "Please enter your cohort\n"
+    cohort = STDIN.gets.chomp
+    if cohort == "" 
+      cohort = :december 
+    else cohort = cohort.to_sym
     end
-    
+    print "Please enter #{name}'s country of birth\n"
+    country_of_birth = STDIN.gets.chomp
+    print "Please enter #{name}'s height\n"
+    height = STDIN.gets.chomp
+    print "Please enter #{name}'s hobbies\n"
+    hobbylist = STDIN.gets.chomp
+    hobbies = []
+    hobbies << hobbylist.split{" "}
+    add_student(name, cohort, country_of_birth, height, hobbies)
+    if @students.length > 1
+      print "Now we have #{@students.length} students\n"
+    else print "Now we have #{@students.length} student\n"
+    end
+    # get another name from the user
+    puts "Please enter another name, or press enter to finish:"
+    name = STDIN.gets.chomp
+    break
   end
-  get_info
   # return the array of students
   @students
+end
+
+def add_student
+   @students << {:name => name, :cohort => cohort, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
+ end
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(',')
+    @students << {:name => name, :cohort => cohort.to_sym}
+  end
+  file.close
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.length} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
 
 def save_students
@@ -90,14 +108,6 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
-    @students << {:name => name, :cohort => cohort.to_sym}
-  end
-  file.close
-end
 
 def print_header
   print "The students of my cohort of Makers Academy\n----------------\n"
@@ -127,4 +137,5 @@ end
 #print_names(students) if students.length > 0
 #print_footer(students) if students.length > 0
 
+try_load_students
 interactive_menu
