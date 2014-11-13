@@ -39,47 +39,37 @@ def process(selection)
 end
 
 def input_students
-  print "Please enter the names and details of the students\nTo finish, just hit return twice\n"
-
-  name = STDIN.gets.chomp
-  while !name.empty? do 
-    print "Please enter your cohort\n"
-    cohort = STDIN.gets.chomp
-    if cohort == "" 
-      cohort = :december 
-    else cohort = cohort.to_sym
-    end
-    print "Please enter #{name}'s country of birth\n"
-    country_of_birth = STDIN.gets.chomp
-    print "Please enter #{name}'s height\n"
-    height = STDIN.gets.chomp
-    print "Please enter #{name}'s hobbies\n"
-    hobbylist = STDIN.gets.chomp
-    hobbies = []
-    hobbies << hobbylist.split{" "}
-    add_student(name, cohort, country_of_birth, height, hobbies)
+  @student = []
+  puts "Please enter the names and details of the students\nTo finish, just hit return twice"
+  @name = STDIN.gets.chomp
+  while !@name.empty? do 
+    @student << @name
+    get_details
+    @students << @student
     if @students.length > 1
-      print "Now we have #{@students.length} students\n"
-    else print "Now we have #{@students.length} student\n"
+      puts "Now we have #{@students.length} students"
+    else puts "Now we have #{@students.length} student"
     end
-    # get another name from the user
-    puts "Please enter another name, or press enter to finish:"
-    name = STDIN.gets.chomp
+    input_students
     break
   end
-  # return the array of students
   @students
 end
 
-def add_student
-   @students << {:name => name, :cohort => cohort, :hobbies => hobbies, :country_of_birth => country_of_birth, :height => height}
- end
+def get_details
+  questions = ["cohort", "country of birth", "height", "hobbies"]
+  questions.each do |question|
+    puts "Please enter #{@name}'s #{question}"
+    answer = STDIN.gets.chomp
+    @student << "#{question.to_sym}: #{answer}"
+  end
+end
 
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
-    @students << {:name => name, :cohort => cohort.to_sym}
+  name, cohort, country_of_birth, height, hobbies = line.chomp.split(',')
+    @students << {:name => name, :cohort => cohort.to_sym, :country_of_birth => country_of_birth, :height => height, :hobbies => hobbies}
   end
   file.close
 end
@@ -97,11 +87,9 @@ def try_load_students
 end
 
 def save_students
-  # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:country_of_birth], student[:height], student[:hobbies]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
@@ -110,32 +98,21 @@ end
 
 
 def print_header
-  print "The students of my cohort of Makers Academy\n----------------\n"
+  puts "The students of my cohort of Makers Academy\n----------------"
 end
 
 def print_students_list(names)
-  for name in names 
-    i = 0
-    while i < names.length 
-      i += 1 
-      #if name[:cohort]==:december 
-        puts name
-      #end
-    end
+  names.each do |name|
+    puts name
   end
 end
 
 def print_footer(names)
   if names.length > 1
-    print "Overall, we have #{names.length} great students\n"
-  else print "Overall, we have #{names.length} great student\n"
+    puts "Overall, we have #{names.length} great students"
+  else puts "Overall, we have #{names.length} great student"
   end
 end
-
-#students = input_students
-#print_header if students.length > 0
-#print_names(students) if students.length > 0
-#print_footer(students) if students.length > 0
 
 try_load_students
 interactive_menu
