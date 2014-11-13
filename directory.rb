@@ -1,25 +1,34 @@
+@students = []
+
 def interactive_menu
-  students = []
   loop do
-    # 1. print the menu and ask the user what to do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    # 2. red the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
+  print_menu
+  process(gets.chomp)
+  end
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_students_list(@students)
+  print_footer(@students)
+end
+
+def process(selection)
+  case selection
     when "1"
-      students = input_students
+      @students = input_students
     when "2"
-      print_header
-      print(students)
-      print_footer(students)
+      show_students
     when "9"
       exit
     else
       puts "I don't know what you meant, try again"
-    end
   end
 end
 
@@ -67,7 +76,7 @@ def print_header
   print "The students of my cohort of Makers Academy\n----------------\n"
 end
 
-def print_names(names)
+def print_students_list(names)
   for name in names 
     i = 0
     while i < names.length 
