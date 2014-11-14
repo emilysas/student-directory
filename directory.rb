@@ -66,12 +66,12 @@ def get_details
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-  name, cohort, country_of_birth, height, hobbies = line.chomp.split(',')
-    @students << {:name => name, :cohort => cohort.to_sym, :country_of_birth => country_of_birth, :height => height, :hobbies => hobbies}
-  end
-  file.close
+  open(filename, mode="r"){|file| 
+    file.readlines.each do |line|
+      name, cohort, country_of_birth, height, hobbies = line.chomp.split(',')
+      @students << {:name => name, :cohort => cohort.to_sym, :country_of_birth => country_of_birth, :height => height, :hobbies => hobbies}
+      end
+      }
 end
 
 def try_load_students
