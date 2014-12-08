@@ -64,7 +64,7 @@ def input_students
 end
 
 def get_details
-  questions = ["cohort", "country of birth", "height", "hobbies"]
+  questions = ["cohort", "country_of_birth", "height", "hobbies"]
   questions.each do |question|
     puts "Please enter #{@name}'s #{question}"
     answer = STDIN.gets.chomp
