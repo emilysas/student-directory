@@ -1,3 +1,6 @@
+require 'csv'
+require 'byebug'
+
 @students = []
 
 def interactive_menu
@@ -10,8 +13,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to file"
+  puts "4. Load the list from file"
   puts "9. Exit"
 end
 
@@ -28,9 +31,13 @@ def process(selection)
     when "2"
       show_students
     when "3"
-      save_students
+      puts "Please enter the filename you would like to save to"
+      filename = STDIN.gets.chomp
+      save_students(filename)
     when "4"
-      load_students
+      puts "Please enter the filename you would like to load from"
+      filename = STDIN.gets.chomp
+      load_students(filename)
     when "9"
       exit
     else
@@ -39,11 +46,11 @@ def process(selection)
 end
 
 def input_students
-  @student = []
+  @student = {}
   puts "Please enter the names and details of the students\nTo finish, just hit return twice"
   @name = STDIN.gets.chomp
   while !@name.empty? do 
-    @student << @name
+    @student[:name] = @name
     get_details
     @students << @student
     if @students.length > 1
@@ -61,17 +68,19 @@ def get_details
   questions.each do |question|
     puts "Please enter #{@name}'s #{question}"
     answer = STDIN.gets.chomp
-    @student << "#{question.to_sym}: #{answer}"
+    @student.store(question.to_sym, answer)
   end
 end
 
-def load_students(filename = "students.csv")
-  open(filename, mode="r"){|file| 
-    file.readlines.each do |line|
-      name, cohort, country_of_birth, height, hobbies = line.chomp.split(',')
-      @students << {:name => name, :cohort => cohort.to_sym, :country_of_birth => country_of_birth, :height => height, :hobbies => hobbies}
-      end
-      }
+def load_students(filename = "./students.csv")
+  CSV.foreach(filename) do |row|
+    name, cohort, country_of_birth, height, hobbies = row
+    add_student(name, cohort, country_of_birth, height, hobbies)
+  end
+end
+
+def add_student(name, cohort, country_of_birth, height, hobbies)
+    @students << {:name => name, :cohort => cohort, :country_of_birth => country_of_birth, :height => height, :hobbies => hobbies}
 end
 
 def try_load_students
@@ -86,14 +95,12 @@ def try_load_students
   end
 end
 
-def save_students
-  file = File.open("students.csv", "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:country_of_birth], student[:height], student[:hobbies]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+def save_students (filename = "./students.csv")
+  CSV.open(filename, "wb") do |csv|
+    @students.each do |student|
+      csv << [student[:name], student[:cohort], student[:country_of_birth], student[:height], student[:hobbies]]
+    end
   end
-  file.close
 end
 
 
